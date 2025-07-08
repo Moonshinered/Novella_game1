@@ -1,57 +1,28 @@
-using System.Security.Cryptography.X509Certificates;
-using VisualNovelGame.Models;
+using NovellGame.Models;
 
-public class GameEngine
+public sealed class GameEngine
 {
-    private SceneManager sceneManager;
-    public static string userName;
-    public GameEngine()
+    private readonly SceneManager _manager;
+    private readonly GameState _state;
+
+    public GameEngine(SceneManager manager, GameState state)
     {
-        Console.WriteLine("Введите имя персонажа:");
-        userName = Console.ReadLine();
-        sceneManager = new SceneManager("Data/scenes.json");
+        _manager = manager;
+        _state = state;
     }
 
-    public void Start()
+    public Scene CurrentScene => _manager.GetCurrentScene();
+    public IReadOnlyList<Choice> GetChoices() => _manager.GetAvailableChoices();
+    public bool IsGameOver() => _manager.IsGameOver();
+
+    public void Choose(int index)
     {
+        var choice = GetChoices()[index];
 
-        while (true)
-        {
-            var currentScene = sceneManager.GetCurrentScene();
-            var availableChoises = sceneManager.GetAvailableChoices(currentScene);
-            int choiceIndex;
+        if (choice.Actions != null)
+            foreach (var a in choice.Actions)
+                a.Execute(_state);
 
-            Console.Clear();
-            Console.WriteLine(currentScene.getText());
-
-            for (int i = 0; i < availableChoises.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {availableChoises[i].Text}");
-
-            }
-            while (true)
-            {
-                string usersInput = Console.ReadLine();
-                if (int.TryParse(usersInput, out int parsed)
-                    && parsed >= 1
-                    && parsed <= availableChoises.Count)
-                {
-                    choiceIndex = parsed - 1;
-                    break;
-                }
-                Console.WriteLine("Выберите один из предложенных вариантов действий");
-            }
-
-            if (availableChoises[choiceIndex].setFlag != null)
-            {
-                sceneManager.SetFlag(availableChoises[choiceIndex].setFlag, true);
-            }
-            sceneManager.GoToNextScene(choiceIndex);
-
-            if (sceneManager.IsGameOver())
-                break;
-        }
-
-        Console.WriteLine("Спасибо за игру!");
+        _manager.GoToNextScene(index);
     }
 }

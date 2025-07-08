@@ -1,7 +1,7 @@
 [
   {
     "Id": "start",
-    "Text": "Вы стоите перед входом в лес. Что делать, $userName?",
+    "Text": "Вы стоите перед входом в лес",
     "Choices": [
       {
         "Text": "Войти в лес",
@@ -20,7 +20,13 @@
       {
         "Text": "Собрать траву",
         "NextSceneId": "home",
-        "setFlag": "haveGrace"
+        "Actions": [
+          {
+            "type": "flagAction",
+            "flag": "haveGrace",
+            "set":  true
+          }
+        ]
       }
     ]
   },
@@ -43,7 +49,8 @@
         "NextSceneId": "box",
         "Conditions": [
           {
-            "flagName": "haveGrace"
+            "type": "flagCon",
+            "flag": "haveGrace"
           }
         ]
       },
