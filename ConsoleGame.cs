@@ -1,14 +1,16 @@
-﻿public static class ConsoleGame
+﻿using NovellGame.Models;
+
+public static class ConsoleGame
 {
     public static void Run()
     {
-        var state = new GameState();
+        Console.Write("Введите имя персонажа: ");
+        var userName = Console.ReadLine();
+        var state = new GameState(new Character(userName, 0, 5, 0, 0, 0));
         var repo = new JsonSceneRepository("Data/scenes.json");
         var manager = new SceneManager(state, repo);
         var engine = new GameEngine(manager, state);
 
-        Console.Write("Введите имя персонажа: ");
-        var userName = Console.ReadLine();
 
         while (!engine.IsGameOver())
         {

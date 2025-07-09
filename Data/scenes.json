@@ -37,6 +37,18 @@
       {
         "Text": "Идти к себе в комнату",
         "NextSceneId": "room"
+      },
+      {
+        "Text": "Покидать дарц",
+        "NextSceneId": "home",
+        "Conditions": [
+          {
+            "type": "statCon",
+            "statN": "agl",
+            "value": 4,
+              "more" : false
+          }
+        ]
       }
     ]
   },
