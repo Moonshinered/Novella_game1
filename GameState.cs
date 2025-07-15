@@ -31,4 +31,8 @@ public class GameState
     {
         return player.GetState(statName);
     }
+    public Character GetPlayer() 
+    {
+        return player;
+    }
 }

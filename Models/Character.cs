@@ -2,7 +2,7 @@
 public class Character
 {
     public string Name { get; set; }
-    public Dictionary<string, int> Stats;
+    private Dictionary<string, int> Stats;
     public Character(
         string name,
         int stranght,
@@ -30,6 +30,16 @@ public class Character
             throw new ArgumentException("Несуществующий стат " + stateName);
         }
     }
-
+    public void ModifyState(string stateName, int value)
+    {
+        try
+        {
+            Stats[stateName] += value;
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new ArgumentException("Несуществующий стат " + stateName);
+        }
+    }
 
 }
